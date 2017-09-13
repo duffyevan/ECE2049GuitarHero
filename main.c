@@ -12,17 +12,14 @@
 #include "peripherals.h"
 
 // Function Prototypes
-void swDelay(char numLoops);
+void countDown();
 
 // Declare globals here
-
+char currKey = 0;
 // Main
 void main(void)
 
 {
-
-    unsigned int somethingFun = 0x2121;
-
     WDTCTL = WDTPW | WDTHOLD;       // Stop watchdog timer
 
     // Useful code starts here
@@ -39,6 +36,8 @@ void main(void)
     Graphics_drawStringCentered(&g_sContext, "Press '*' to begin", AUTO_STRING_LENGTH, 48, 25, TRANSPARENT_TEXT);
     while (getKey() != '*');
     countDown();
+    playTone(523,5);
+    playTone(1046,5);
 
 
     while (1)    // Forever loop
@@ -52,26 +51,6 @@ void main(void)
 }
 
 
-void swDelay(char numLoops)
-{
-	// This function is a software delay. It performs
-	// useless loops to waste a bit of time
-	//
-	// Input: numLoops = number of delay loops to execute
-	// Output: none
-	//
-	// smj, ECE2049, 25 Aug 2013
-
-	volatile unsigned int i,j;	// volatile to prevent optimization
-			                            // by compiler
-
-	for (j=0; j<numLoops; j++)
-    {
-    	i = 50000 ;					// SW Delay
-   	    while (i > 0)				// could also have used while (i)
-	       i--;
-    }
-}
 
 
 /**
@@ -92,18 +71,18 @@ void swDelay(char numLoops)
 
 unsigned char getBoardButtons() {
     unsigned char buttons = 0b00000000; //standardized in C++14, may not work
-    if (getS1) {
-        buttons |= 0b00000001;
-    }
-    if (getS2){
-        buttons |= 0b00000010;
-    }
-    if (getS3){
-        buttons |= 0b00000100;
-    }
-    if (getS4){
-        buttons |= 0b00001000;
-    }
+//    if (getS1) {
+//        buttons |= 0b00000001;
+//    }
+//    if (getS2){
+//        buttons |= 0b00000010;
+//    }
+//    if (getS3){
+//        buttons |= 0b00000100;
+//    }
+//    if (getS4){
+//        buttons |= 0b00001000;
+//    }
     return buttons;
 
 
@@ -120,18 +99,18 @@ unsigned char getBoardButtons() {
 
 void setLEDs(unsigned char ledconfig) {
 
-    if (ledconfig & 0b00000001) {
-        setLED1on();
-    }
-    if (ledconfig & 0b00000010) {
-        setLED2on();
-    }
-    if (ledconfig & 0b00000100) {
-        setLED3on();
-    }
-    if (ledconfig & 0b00001000) {
-        setLED4on();
-    }
+//    if (ledconfig & 0b00000001) {
+//        setLED1on();
+//    }
+//    if (ledconfig & 0b00000010) {
+//        setLED2on();
+//    }
+//    if (ledconfig & 0b00000100) {
+//        setLED3on();
+//    }
+//    if (ledconfig & 0b00001000) {
+//        setLED4on();
+//    }
 
 
 }

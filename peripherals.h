@@ -70,10 +70,16 @@ void DACSetValue(unsigned int dac_code);
 void setupSPI_DAC(void);
 
 void configDisplay(void);
-void BuzzerOn(void);
+void playTone(unsigned int frequency, unsigned int duration);
+void playTone(unsigned int frequency, unsigned int duration);
+void BuzzerOn(unsigned int period);
 void BuzzerOff(void);
+void initLeds(void);
 
 void configKeypad(void);
 unsigned char getKey(void);
+
+void swDelay(char numLoops);
+void shortDelay(char numLoops);
 
 #endif /* PERIPHERALS_H_ */

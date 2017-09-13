@@ -17,7 +17,7 @@
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROGRAM.TI MSP430 USB1/MSP430" value="${build_artifact:ece2049_demo_ccs7_smj}"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT.TI MSP430 USB1/MSP430" value="ece2049_demo_ccs7_smj"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_TARGET_CONFIG" value="${target_config_active_default:ece2049_demo_ccs7_smj}"/>
-<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.TI MSP430 USB1/MSP430" value="R:/ccs7\ece2049_demo_ccs7_smj\Debug\ece2049_demo_ccs7_smj.out"/>
+<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.TI MSP430 USB1/MSP430" value="/home/evan/Documents/ECE/lab2/ECE2049GuitarHero/Debug/ece2049_demo_ccs7_smj.out"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/ece2049_demo_ccs7_smj"/>
 </listAttribute>

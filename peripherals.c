@@ -77,12 +77,23 @@ void setLeds(unsigned char state)
     P6OUT |= mask;
 }
 
+void playTone(unsigned int frequency, unsigned int duration){
+    BuzzerOn(32000/frequency);
+    shortDelay(duration);
+    BuzzerOff();
+}
+
+void playLongTone(unsigned int frequency, unsigned int duration){
+    BuzzerOn(32000/frequency);
+    swDelay(duration);
+    BuzzerOff();
+}
 
 /*
  * Enable a PWM-controlled buzzer on P3.5
  * This function makes use of TimerB0.
  */
-void BuzzerOn(char period)
+void BuzzerOn(unsigned int period)
 {
     // Initialize PWM output on P3.5, which corresponds to TB0.5
     P3SEL |= BIT5; // Select peripheral output mode for P3.5
@@ -238,6 +249,47 @@ void configDisplay(void)
     Graphics_clearDisplay(&g_sContext);
     Graphics_flushBuffer(&g_sContext);
 }
+
+void swDelay(char numLoops)
+{
+    // This function is a software delay. It performs
+    // useless loops to waste a bit of time
+    //
+    // Input: numLoops = number of delay loops to execute
+    // Output: none
+    //
+    // smj, ECE2049, 25 Aug 2013
+
+    volatile unsigned int i,j;  // volatile to prevent optimization
+                                        // by compiler
+
+    for (j=0; j<numLoops; j++)
+    {
+        i = 50000 ;                 // SW Delay
+        while (i > 0)               // could also have used while (i)
+           i--;
+    }
+}
+
+void shortDelay(char numLoops)
+{
+    // This function is a software delay. It performs
+    // useless loops to waste a bit of time
+    //
+    // Input: numLoops = number of delay loops to execute
+    // Output: none
+    //
+    // smj, ECE2049, 25 Aug 2013
+
+    volatile unsigned int j = numLoops;  // volatile to prevent optimization
+                                        // by compiler
+
+    while (j)
+    {
+           j--;
+    }
+}
+
 
 //------------------------------------------------------------------------------
 // Timer1 A0 Interrupt Service Routine
