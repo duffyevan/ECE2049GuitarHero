@@ -37,7 +37,8 @@ void main(void)
     // Write some text to the display
     Graphics_drawStringCentered(&g_sContext, "MSP430 Hero", AUTO_STRING_LENGTH, 48, 15, TRANSPARENT_TEXT);
     Graphics_drawStringCentered(&g_sContext, "Press '*' to begin", AUTO_STRING_LENGTH, 48, 25, TRANSPARENT_TEXT);
-
+    while (getKey() != '*');
+    countDown();
 
 
     while (1)    // Forever loop
@@ -183,4 +184,16 @@ void playNote (char note) {
     }
 }
 
+void countDown() {
+    Graphics_clearDisplay(&g_sContext); // Clear the display
+    Graphics_drawStringCentered(&g_sContext, "3", 1, 48, 15,OPAQUE_TEXT);
+    Graphics_flushBuffer(&g_sContext);
+    swDelay(1);
+    Graphics_drawStringCentered(&g_sContext, "2", 1, 48, 15,OPAQUE_TEXT);
+    Graphics_flushBuffer(&g_sContext);
+    swDelay(1);
+    Graphics_drawStringCentered(&g_sContext, "1", 1, 48, 15,OPAQUE_TEXT);
+    Graphics_flushBuffer(&g_sContext);
+    swDelay(1);
 
+}
