@@ -5,11 +5,11 @@
 #define _A4 440
 #define fB4 466
 #define _B4 494
-#define _C4 523
-#define _D4 587
-#define _E4 659
-#define _F4 698
-#define _G4 784
+#define _C5 523
+#define _D5 587
+#define _E5 659
+#define _F5 698
+#define _G5 784
 
 
 
@@ -48,7 +48,7 @@ void main(void)
     Graphics_drawStringCentered(&g_sContext, "Press '*' to begin", AUTO_STRING_LENGTH, 48, 25, TRANSPARENT_TEXT);
     while (getKey() != '*');
     countDown();
-    playTone(523,5);
+    playTone(_A4,5);
     playTone(1046,5);
     playTone(523,5);
     playTone(1046,5);
