@@ -79,7 +79,7 @@ void setLeds(unsigned char state)
 
 void playTone(unsigned int frequency, unsigned int duration){
     BuzzerOn(32000/frequency);
-    shortDelay(50000/duration);
+    shortDelay(duration);
     BuzzerOff();
 }
 
@@ -250,7 +250,7 @@ void configDisplay(void)
     Graphics_flushBuffer(&g_sContext);
 }
 
-void swDelay(char numLoops)
+void swDelay(unsigned int numLoops)
 {
     // This function is a software delay. It performs
     // useless loops to waste a bit of time
@@ -271,7 +271,7 @@ void swDelay(char numLoops)
     }
 }
 
-void shortDelay(char numLoops)
+void shortDelay(unsigned int numLoops)
 {
     // This function is a software delay. It performs
     // useless loops to waste a bit of time
@@ -281,13 +281,13 @@ void shortDelay(char numLoops)
     //
     // smj, ECE2049, 25 Aug 2013
 
-    volatile unsigned int j = numLoops;  // volatile to prevent optimization
-                                        // by compiler
+    volatile unsigned int i,j,k;  // volatile to prevent optimization
+                                    // by compiler
+    k = numLoops/4;
+    i = 50000/k ;                 // SW Delay
+    while (i > 0)               // could also have used while (i)
+        i--;
 
-    while (j)
-    {
-           j--;
-    }
 }
 
 

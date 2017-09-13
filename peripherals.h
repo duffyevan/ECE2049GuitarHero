@@ -79,7 +79,7 @@ void initLeds(void);
 void configKeypad(void);
 unsigned char getKey(void);
 
-void swDelay(char numLoops);
-void shortDelay(char numLoops);
+void swDelay(unsigned int numLoops);
+void shortDelay(unsigned int numLoops);
 
 #endif /* PERIPHERALS_H_ */
