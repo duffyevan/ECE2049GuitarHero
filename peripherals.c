@@ -79,7 +79,7 @@ void setLeds(unsigned char state)
 
 void playTone(unsigned int frequency, unsigned int duration){
     BuzzerOn(32000/frequency);
-    shortDelay(duration);
+    shortDelay(50000/duration);
     BuzzerOff();
 }
 
