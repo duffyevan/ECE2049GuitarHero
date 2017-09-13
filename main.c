@@ -1,15 +1,28 @@
 /************** ECE2049 DEMO CODE ******************/
 /**************  20 August 2016   ******************/
 /***************************************************/
-
-#define _A4 440
-#define fB4 466
-#define _B4 494
-#define _C5 523
-#define _D5 587
-#define _E5 659
-#define _F5 698
-#define _G5 784
+#define RST 1
+#define C3_ 523/4
+#define D3_ 587/4
+#define E3_ 659/4
+#define F3_ 698/4
+#define G3_ 784/4
+#define A3_ 440/2
+#define B3f 466/2
+#define B3_ 494/2
+#define C4_ 523/2
+#define D4_ 587/2
+#define E4_ 659/2
+#define F4_ 698/2
+#define G4_ 784/2
+#define A4_ 440
+#define B4f 466
+#define B4_ 494
+#define C5_ 523
+#define D5_ 587
+#define E5_ 659
+#define F5_ 698
+#define G5_ 784
 
 
 
@@ -48,10 +61,49 @@ void main(void)
     Graphics_drawStringCentered(&g_sContext, "Press '*' to begin", AUTO_STRING_LENGTH, 48, 25, TRANSPARENT_TEXT);
     while (getKey() != '*');
     countDown();
-    playTone(_A4,5);
-    playTone(1046,5);
-    playTone(523,5);
-    playTone(1046,5);
+
+    playTone(D4_,4);
+    playTone(D3_,4);
+    playTone(D4_,8);
+    while (1) {
+        playTone(A4_,16);
+        playTone(D4_,16);
+        playTone(D5_,16);
+        playTone(A4_,16);
+        playTone(C5_,4);
+    //    playTone(RST,4);
+        playTone(C5_,8);
+        playTone(C5_,4);
+        playTone(B4_,16);
+        playTone(C5_,16);
+        playTone(B4_,16);
+        playTone(A4_,16);
+        playTone(B4_,16);
+
+        playTone(F4_,8);
+        playTone(D4_,8);
+        playTone(A4_,4);
+        playTone(A4_,4);
+        playTone(A4_,8);
+        playTone(A4_,8);
+
+        playTone(F4_,16);
+        playTone(A4_,16);
+        playTone(D4_,16);
+        playTone(F4_,16);
+        playTone(G4_,4);
+        playTone(G4_,4);
+        playTone(G4_,8);
+        playTone(F4_,8);
+
+        playTone(A4_,16);
+        playTone(G4_,16);
+        playTone(F4_,8);
+        playTone(D4_,4);
+        playTone(D4_,4);
+        playTone(D4_,8);
+    }
+
 
     while (1)    // Forever loop
     {
