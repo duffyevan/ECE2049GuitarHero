@@ -189,3 +189,14 @@ void countDown() {
     swDelay(1);
 
 }
+
+void humiliatePlayer(){
+	Graphics_clearDisplay(&g_sContext); // Clear the display
+        Graphics_drawStringCentered(&g_sContext, "You Lose!", AUTO_STRING_LENGTH, 48, 15,OPAQUE_TEXT);
+        Graphics_drawStringCentered(&g_sContext, "You'll Never Be An", AUTO_STRING_LENGTH, 48, 25,OPAQUE_TEXT);
+        Graphics_drawStringCentered(&g_sContext, "MSP430 HERO!", AUTO_STRING_LENGTH, 48, 35,OPAQUE_TEXT);
+        Graphics_drawStringCentered(&g_sContext, "Press *", AUTO_STRING_LENGTH, 48, 45,OPAQUE_TEXT);
+        Graphics_drawStringCentered(&g_sContext, "To Reset", AUTO_STRING_LENGTH, 48, 55,OPAQUE_TEXT);
+        Graphics_flushBuffer(&g_sContext);
+        while (getKey() != '*');
+}
