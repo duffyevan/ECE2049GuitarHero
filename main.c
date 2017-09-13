@@ -2,6 +2,18 @@
 /**************  20 August 2016   ******************/
 /***************************************************/
 
+#define _A4 440
+#define fB4 466
+#define _B4 494
+#define _C4 523
+#define _D4 587
+#define _E4 659
+#define _F4 698
+#define _G4 784
+
+
+
+
 #include <msp430.h>
 
 /* Peripherals.c and .h are where the functions that implement
@@ -38,7 +50,8 @@ void main(void)
     countDown();
     playTone(523,5);
     playTone(1046,5);
-
+    playTone(523,5);
+    playTone(1046,5);
 
     while (1)    // Forever loop
     {
@@ -71,18 +84,18 @@ void main(void)
 
 unsigned char getBoardButtons() {
     unsigned char buttons = 0b00000000; //standardized in C++14, may not work
-//    if (getS1) {
-//        buttons |= 0b00000001;
-//    }
-//    if (getS2){
-//        buttons |= 0b00000010;
-//    }
-//    if (getS3){
-//        buttons |= 0b00000100;
-//    }
-//    if (getS4){
-//        buttons |= 0b00001000;
-//    }
+    //    if (getS1) {
+    //        buttons |= 0b00000001;
+    //    }
+    //    if (getS2){
+    //        buttons |= 0b00000010;
+    //    }
+    //    if (getS3){
+    //        buttons |= 0b00000100;
+    //    }
+    //    if (getS4){
+    //        buttons |= 0b00001000;
+    //    }
     return buttons;
 
 
@@ -99,18 +112,18 @@ unsigned char getBoardButtons() {
 
 void setLEDs(unsigned char ledconfig) {
 
-//    if (ledconfig & 0b00000001) {
-//        setLED1on();
-//    }
-//    if (ledconfig & 0b00000010) {
-//        setLED2on();
-//    }
-//    if (ledconfig & 0b00000100) {
-//        setLED3on();
-//    }
-//    if (ledconfig & 0b00001000) {
-//        setLED4on();
-//    }
+    //    if (ledconfig & 0b00000001) {
+    //        setLED1on();
+    //    }
+    //    if (ledconfig & 0b00000010) {
+    //        setLED2on();
+    //    }
+    //    if (ledconfig & 0b00000100) {
+    //        setLED3on();
+    //    }
+    //    if (ledconfig & 0b00001000) {
+    //        setLED4on();
+    //    }
 
 
 }
