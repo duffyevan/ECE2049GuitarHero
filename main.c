@@ -59,50 +59,56 @@ void main(void)
     // Write some text to the display
     Graphics_drawStringCentered(&g_sContext, "MSP430 Hero", AUTO_STRING_LENGTH, 48, 15, TRANSPARENT_TEXT);
     Graphics_drawStringCentered(&g_sContext, "Press '*' to begin", AUTO_STRING_LENGTH, 48, 25, TRANSPARENT_TEXT);
+    Graphics_flushBuffer(&g_sContext);
     while (getKey() != '*');
     countDown();
+    Graphics_clearDisplay(&g_sContext); // Clear the display
+    Graphics_drawStringCentered(&g_sContext, "Auckland", AUTO_STRING_LENGTH, 48, 15, TRANSPARENT_TEXT);
+    Graphics_flushBuffer(&g_sContext);
+
 
     playTone(D4_,4);
     playTone(D3_,4);
     playTone(D4_,8);
-    playTone(A4_,16);
-    playTone(D4_,16);
-    playTone(D5_,16);
-    playTone(A4_,16);
-    playTone(C5_,4);
-//    playTone(RST,4);
-    playTone(C5_,8);
-    playTone(C5_,4);
-    playTone(B4_,16);
-    playTone(C5_,16);
-    playTone(B4_,16);
-    playTone(A4_,16);
-    playTone(B4_,16);
+    while (1){
+        playTone(A4_,16);
+        playTone(D4_,16);
+        playTone(D5_,16);
+        playTone(A4_,16);
+        playTone(C5_,4);
+        //    playTone(RST,4);
+        playTone(C5_,8);
+        playTone(C5_,4);
+        playTone(B4_,16);
+        playTone(C5_,16);
+        playTone(B4_,16);
+        playTone(A4_,16);
+        playTone(B4_,16);
 
-    playTone(F4_,8);
-    playTone(D4_,8);
-    playTone(A4_,4);
-    playTone(A4_,4);
-    playTone(A4_,8);
-    playTone(A4_,8);
+        playTone(F4_,8);
+        playTone(D4_,8);
+        playTone(A4_,4);
+        playTone(A4_,4);
+        playTone(A4_,8);
+        playTone(A4_,8);
 
-    playTone(F4_,16);
-    playTone(A4_,16);
-    playTone(D4_,16);
-    playTone(F4_,16);
-    playTone(G4_,4);
-    playTone(G4_,4);
-    playTone(G4_,8);
-    playTone(F4_,8);
+        playTone(F4_,16);
+        playTone(A4_,16);
+        playTone(D4_,16);
+        playTone(F4_,16);
+        playTone(G4_,4);
+        playTone(G4_,4);
+        playTone(G4_,8);
+        playTone(F4_,8);
 
-    playTone(A4_,16);
-    playTone(G4_,16);
-    playTone(F4_,8);
-    playTone(D4_,4);
-    playTone(D4_,4);
-    playTone(D4_,8);
+        playTone(A4_,16);
+        playTone(G4_,16);
+        playTone(F4_,8);
+        playTone(D4_,4);
+        playTone(D4_,4);
+        playTone(D4_,8);
 
-
+    }
 
     while (1)    // Forever loop
     {
