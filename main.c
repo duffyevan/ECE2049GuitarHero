@@ -39,13 +39,40 @@
 // Function Prototypes
 void countDown();
 
+//Structures
+typedef struct tone {
+    int frequency;
+    int duration;
+} Tone;
+
 // Declare globals here
 char currKey = 0;
+char currentNoteIndex = 0;
+
+Tone song[] = {{D4_,4},{D3_,4},{D4_,8},{A4_,16},{D4_,16},{D5_,16},{A4_,16},{C5_,4},
+{C5_,8},{C5_,4},{B4_,16},{C5_,16},{B4_,16},{A4_,16},{B4_,16},{F4_,8},{D4_,8},{A4_,4},
+{A4_,4},{A4_,8},{A4_,8},{F4_,16},{A4_,16},{D4_,16},{F4_,16},{G4_,4},{G4_,4},{G4_,8},
+{F4_,8},{A4_,16},{G4_,16},{F4_,8},{D4_,4},{D4_,4},{D4_,8}}; // this is the song!
+
+
+//ISRs
+#pragma vector=TIMER2_A0_VECTOR
+__interrupt void Timer_A2_ISR(void){
+    BuzzerOff();
+    currentNoteIndex++;
+    if (currentNoteIndex == 35){
+        currentNoteIndex = 3; // loop the song
+    }
+    playHWTone(song[currentNoteIndex].frequency, song[currentNoteIndex].duration);
+}
+
+
 // Main
 void main(void)
-
 {
     WDTCTL = WDTPW | WDTHOLD;       // Stop watchdog timer
+    _BIS_SR(GIE);
+
 
     // Useful code starts here
     initLeds();
@@ -66,49 +93,54 @@ void main(void)
     Graphics_drawStringCentered(&g_sContext, "Auckland", AUTO_STRING_LENGTH, 48, 15, TRANSPARENT_TEXT);
     Graphics_flushBuffer(&g_sContext);
 
+    setupTimerA2();
+    playHWTone(song[currentNoteIndex].frequency, song[currentNoteIndex].duration);
 
-    playTone(D4_,4);
-    playTone(D3_,4);
-    playTone(D4_,8);
     while (1){
-        playTone(A4_,16);
-        playTone(D4_,16);
-        playTone(D5_,16);
-        playTone(A4_,16);
-        playTone(C5_,4);
-        //    playTone(RST,4);
-        playTone(C5_,8);
-        playTone(C5_,4);
-        playTone(B4_,16);
-        playTone(C5_,16);
-        playTone(B4_,16);
-        playTone(A4_,16);
-        playTone(B4_,16);
-
-        playTone(F4_,8);
-        playTone(D4_,8);
-        playTone(A4_,4);
-        playTone(A4_,4);
-        playTone(A4_,8);
-        playTone(A4_,8);
-
-        playTone(F4_,16);
-        playTone(A4_,16);
-        playTone(D4_,16);
-        playTone(F4_,16);
-        playTone(G4_,4);
-        playTone(G4_,4);
-        playTone(G4_,8);
-        playTone(F4_,8);
-
-        playTone(A4_,16);
-        playTone(G4_,16);
-        playTone(F4_,8);
-        playTone(D4_,4);
-        playTone(D4_,4);
-        playTone(D4_,8);
-
+        // do nothing :)
     }
+    // playTone(D4_,4);
+    // playTone(D3_,4);
+    // playTone(D4_,8);
+    // while (1){
+    //     playTone(A4_,16);
+    //     playTone(D4_,16);
+    //     playTone(D5_,16);
+    //     playTone(A4_,16);
+    //     playTone(C5_,4);
+    //     //    playTone(RST,4);
+    //     playTone(C5_,8);
+    //     playTone(C5_,4);
+    //     playTone(B4_,16);
+    //     playTone(C5_,16);
+    //     playTone(B4_,16);
+    //     playTone(A4_,16);
+    //     playTone(B4_,16);
+
+    //     playTone(F4_,8);
+    //     playTone(D4_,8);
+    //     playTone(A4_,4);
+    //     playTone(A4_,4);
+    //     playTone(A4_,8);
+    //     playTone(A4_,8);
+
+    //     playTone(F4_,16);
+    //     playTone(A4_,16);
+    //     playTone(D4_,16);
+    //     playTone(F4_,16);
+    //     playTone(G4_,4);
+    //     playTone(G4_,4);
+    //     playTone(G4_,8);
+    //     playTone(F4_,8);
+
+    //     playTone(A4_,16);
+    //     playTone(G4_,16);
+    //     playTone(F4_,8);
+    //     playTone(D4_,4);
+    //     playTone(D4_,4);
+    //     playTone(D4_,8);
+
+    // }
 
     while (1)    // Forever loop
     {

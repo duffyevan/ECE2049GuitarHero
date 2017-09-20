@@ -70,6 +70,7 @@ void DACSetValue(unsigned int dac_code);
 void setupSPI_DAC(void);
 
 void configDisplay(void);
+void playHWTone(unsigned int frequency, unsigned int duration);
 void playTone(unsigned int frequency, unsigned int duration);
 void playTone(unsigned int frequency, unsigned int duration);
 void BuzzerOn(unsigned int period);

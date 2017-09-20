@@ -77,14 +77,35 @@ void setLeds(unsigned char state)
     P6OUT |= mask;
 }
 
+void setupTimerA2(){
+    TA2CTL = TASSEL_1 | MC_1 | ID_1; // SMCLK, UP MODE, INPUT DIVIDE BY 2^1
+}
+
+void timerA2InterruptEnable(){
+    TA2CCTL0 = CCIE;
+}
+void timerA2InterruptDisable(){
+    TA2CCTL0 &= ~CCIE;
+}
+void setMaxCount(int count){
+    TA2CCR0 = count;
+}
+
+void playHWTone(unsigned int frequency, unsigned int duration){
+    BuzzerOn(32768/frequency);
+    setMaxCount(32768/duration);
+    timerA2InterruptEnable();
+}
+
+
 void playTone(unsigned int frequency, unsigned int duration){
-    BuzzerOn(32000/frequency);
+    BuzzerOn(32768/frequency);
     shortDelay(duration);
     BuzzerOff();
 }
 
 void playLongTone(unsigned int frequency, unsigned int duration){
-    BuzzerOn(32000/frequency);
+    BuzzerOn(32768/frequency);
     swDelay(duration);
     BuzzerOff();
 }
