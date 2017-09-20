@@ -71,7 +71,7 @@ __interrupt void Timer_A2_ISR(void){
 void main(void)
 {
     WDTCTL = WDTPW | WDTHOLD;       // Stop watchdog timer
-    _BIS_SR(GIE);
+    _BIS_SR(GIE); // global interrupt enable
 
 
     // Useful code starts here
@@ -93,60 +93,18 @@ void main(void)
     Graphics_drawStringCentered(&g_sContext, "Auckland", AUTO_STRING_LENGTH, 48, 15, TRANSPARENT_TEXT);
     Graphics_flushBuffer(&g_sContext);
 
-    setupTimerA2();
-    playHWTone(song[currentNoteIndex].frequency, song[currentNoteIndex].duration);
+    setupTimerA2(); // setup timer control register
+    playHWTone(song[currentNoteIndex].frequency, song[currentNoteIndex].duration); // kickstart the song, the rest is handled by interrupts
 
-    while (1){
-        // do nothing :)
-    }
-    // playTone(D4_,4);
-    // playTone(D3_,4);
-    // playTone(D4_,8);
-    // while (1){
-    //     playTone(A4_,16);
-    //     playTone(D4_,16);
-    //     playTone(D5_,16);
-    //     playTone(A4_,16);
-    //     playTone(C5_,4);
-    //     //    playTone(RST,4);
-    //     playTone(C5_,8);
-    //     playTone(C5_,4);
-    //     playTone(B4_,16);
-    //     playTone(C5_,16);
-    //     playTone(B4_,16);
-    //     playTone(A4_,16);
-    //     playTone(B4_,16);
-
-    //     playTone(F4_,8);
-    //     playTone(D4_,8);
-    //     playTone(A4_,4);
-    //     playTone(A4_,4);
-    //     playTone(A4_,8);
-    //     playTone(A4_,8);
-
-    //     playTone(F4_,16);
-    //     playTone(A4_,16);
-    //     playTone(D4_,16);
-    //     playTone(F4_,16);
-    //     playTone(G4_,4);
-    //     playTone(G4_,4);
-    //     playTone(G4_,8);
-    //     playTone(F4_,8);
-
-    //     playTone(A4_,16);
-    //     playTone(G4_,16);
-    //     playTone(F4_,8);
-    //     playTone(D4_,4);
-    //     playTone(D4_,4);
-    //     playTone(D4_,8);
-
-    // }
 
     while (1)    // Forever loop
     {
         // Check if any keys have been pressed on the 3x4 keypad
         currKey = getKey();
-
+        if (currKey == '#'){
+            timerA2InterruptDisable(); // stop the interrupts
+            BuzzerOff(); // stop tone
+        }
 
 
     }  // end while (1)
