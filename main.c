@@ -38,6 +38,7 @@
 
 // Function Prototypes
 void countDown();
+void kickstartSong(int noteIndex);
 
 //Structures
 typedef struct tone {
@@ -94,8 +95,7 @@ void main(void)
     Graphics_flushBuffer(&g_sContext);
 
     setupTimerA2(); // setup timer control register
-    playHWTone(song[currentNoteIndex].frequency, song[currentNoteIndex].duration); // kickstart the song, the rest is handled by interrupts
-
+    kickstartSong(0);
 
     while (1)    // Forever loop
     {
@@ -104,6 +104,11 @@ void main(void)
         if (currKey == '#'){
             timerA2InterruptDisable(); // stop the interrupts
             BuzzerOff(); // stop tone
+            while (getKey());
+        }
+        else if (currKey == '*'){
+            kickstartSong(0);
+            while (getKey());
         }
 
 
@@ -259,5 +264,10 @@ void congratulatePlayer(){
         //TODO play some fanfare
 	while (getKey() != '*');
 	
+}
+
+void kickstartSong(int noteIndex){
+    currentNoteIndex = noteIndex;
+    playHWTone(song[currentNoteIndex].frequency, song[currentNoteIndex].duration); // kickstart the song, the rest is handled by interrupts
 }
 

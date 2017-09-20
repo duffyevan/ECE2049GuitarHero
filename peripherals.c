@@ -78,7 +78,7 @@ void setLeds(unsigned char state)
 }
 
 void setupTimerA2(){
-    TA2CTL = TASSEL_1 | MC_1 | ID_1; // SMCLK, UP MODE, INPUT DIVIDE BY 2^1
+    TA2CTL = TASSEL_1 | MC_1 | ID_1; // ACLK, UP MODE, INPUT DIVIDE BY 2^1
 }
 
 void timerA2InterruptEnable(){

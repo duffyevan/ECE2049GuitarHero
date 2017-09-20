@@ -71,6 +71,7 @@ void setupSPI_DAC(void);
 
 void configDisplay(void);
 void setupTimerA2();
+void kickstartSong(int noteIndex);
 void timerA2InterruptDisable();
 void playHWTone(unsigned int frequency, unsigned int duration);
 void playTone(unsigned int frequency, unsigned int duration);
