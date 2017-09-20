@@ -77,6 +77,9 @@ void setLeds(unsigned char state)
     P6OUT |= mask;
 }
 
+/**
+ * Set timer parameters. Use the 32kHz clock in up mode and divide the clock by 2 to play the song slower
+**/
 void setupTimerA2(){
     TA2CTL = TASSEL_1 | MC_1 | ID_1; // ACLK, UP MODE, INPUT DIVIDE BY 2^1
 }
@@ -91,6 +94,12 @@ void setMaxCount(int count){
     TA2CCR0 = count;
 }
 
+/**
+ * Plays a tone the same as the other two playTone functions but this one uses hardware counters 
+ * for timing and hardware interrupts to play the next tone. The tones are in the song variable 
+ * in main.c. The advantage of this method is that we can be running other code while the song is
+ * playing and not have to worry about doing the song at all, the interrupts handle it completely 
+**/
 void playHWTone(unsigned int frequency, unsigned int duration){
     BuzzerOn(32768/frequency);
     setMaxCount(32768/duration);
