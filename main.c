@@ -292,28 +292,28 @@ void humiliatePlayer(){
         Graphics_drawStringCentered(&g_sContext, "You Lose!", AUTO_STRING_LENGTH, 48, 15,OPAQUE_TEXT);
         Graphics_drawStringCentered(&g_sContext, "You'll Never Be An", AUTO_STRING_LENGTH, 48, 25,OPAQUE_TEXT);
         Graphics_drawStringCentered(&g_sContext, "MSP430 HERO!", AUTO_STRING_LENGTH, 48, 35,OPAQUE_TEXT);
-        Graphics_drawStringCentered(&g_sContext, "Press *", AUTO_STRING_LENGTH, 48, 45,OPAQUE_TEXT);
+        Graphics_drawStringCentered(&g_sContext, "Press #", AUTO_STRING_LENGTH, 48, 45,OPAQUE_TEXT);
         Graphics_drawStringCentered(&g_sContext, "To Reset", AUTO_STRING_LENGTH, 48, 55,OPAQUE_TEXT);
         Graphics_flushBuffer(&g_sContext);
         playTone(B3_,4);
         playTone(RST,4);
         playTone(B3_,4);
         playTone(B4_,4);
-	while (getKey() != '*');
+	while (getKey() != '#');
 }
 
 void congratulatePlayer(){
 	Graphics_clearDisplay(&g_sContext); // Clear the display
         Graphics_drawStringCentered(&g_sContext, "You Are An", AUTO_STRING_LENGTH, 48, 15,OPAQUE_TEXT);
         Graphics_drawStringCentered(&g_sContext, "MSP430 HERO!", AUTO_STRING_LENGTH, 48, 25,OPAQUE_TEXT);
-        Graphics_drawStringCentered(&g_sContext, "Press *", AUTO_STRING_LENGTH, 48, 35,OPAQUE_TEXT);
+        Graphics_drawStringCentered(&g_sContext, "Press #", AUTO_STRING_LENGTH, 48, 35,OPAQUE_TEXT);
         Graphics_drawStringCentered(&g_sContext, "To Reset", AUTO_STRING_LENGTH, 48, 45,OPAQUE_TEXT);
         Graphics_flushBuffer(&g_sContext);
         //TODO play some fanfare
         playTone(D4_,4);
         playTone(D3_,4);
         playTone(D4_,8);
-	while (getKey() != '*');
+	while (getKey() != '#');
 	
 }
 
