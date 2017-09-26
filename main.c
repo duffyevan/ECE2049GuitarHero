@@ -50,6 +50,7 @@ typedef struct tone {
 char currKey = 0;
 char currentNoteIndex = 0;
 unsigned char missedNotes = 0;
+unsigned char currentLEDs = 0;
 
 Tone song[] = {{D4_,4},{D3_,4},{D4_,8},{A4_,16},{D4_,16},{D5_,16},{A4_,16},{C5_,4},
 {C5_,8},{C5_,4},{B4_,16},{C5_,16},{B4_,16},{A4_,16},{B4_,16},{F4_,8},{D4_,8},{A4_,4},
@@ -65,7 +66,7 @@ __interrupt void Timer_A2_ISR(void){
     if (currentNoteIndex == 35){
         currentNoteIndex = 3; // loop the song
     }
-    playHWTone(song[currentNoteIndex].frequency, song[currentNoteIndex].duration);
+//    playHWTone(song[currentNoteIndex].frequency, song[currentNoteIndex].duration);
 //    BuzzerOff(); // TODO remove this
 }
 
@@ -119,14 +120,22 @@ void main(void)
 		missedNotes = 0;
 		currentNoteIndex = 0;
 	}
-	if (song[currentNoteIndex].frequency > C5_)
+	if (song[currentNoteIndex].frequency > C5_){
 		setLeds(0x08);
-	else if (song[currentNoteIndex].frequency > E4_)
+		currentLEDs = 0x08;
+	}
+	else if (song[currentNoteIndex].frequency > E4_){
 		setLeds(0x04);
-	else if (song[currentNoteIndex].frequency > G3_)
+		currentLEDs = 0x04;
+	}
+	else if (song[currentNoteIndex].frequency > G3_){
 		setLeds(0x02);
-	else 
+		currentLEDs = 0x02;
+	}
+	else {
 		setLeds(0x01);
+		currentLEDs = 0x01; // hang on to the led state for later...
+	}
     }  // end while (1)
 }
 
