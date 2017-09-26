@@ -286,7 +286,7 @@ void humiliatePlayer(){
         Graphics_flushBuffer(&g_sContext);
 	//TODO Play some sad music
         playTone(B3_,4);
-	playTone(01,4);
+	playTone(RST,4);
 	playTone(B3_,4);
 	playTone(B4_,4);
 	while (getKey() != '*');
