@@ -68,6 +68,31 @@ __interrupt void Timer_A2_ISR(void){
         currentNoteIndex = 3; // loop the song
 	loopCounter++;
     }
+    timerA2InterruptDisable(); // dont play the next note till the software tells you to
+    // set the leds to a led corrisponding to a range of notes
+    if (song[currentNoteIndex].frequency > C5_){
+    	setLeds(0x08);
+    	currentLEDs = 0x08;
+    }
+    else if (song[currentNoteIndex].frequency > E4_){
+    	setLeds(0x04);
+    	currentLEDs = 0x04;
+    }
+    else if (song[currentNoteIndex].frequency > G3_){
+    	setLeds(0x02);
+    	currentLEDs = 0x02;
+    }
+    else {
+    	setLeds(0x01);
+    	currentLEDs = 0x01; // hang on to the led state for later...
+    }
+    
+    unsigned int cntr = 0;
+    while (++cntr && getButtons() != currentLEDs);
+
+    if (cntr == 0){
+	missedNotes++;
+    }
     playHWTone(song[currentNoteIndex].frequency, song[currentNoteIndex].duration); // kickstart the next tone of the song
 }
 
@@ -120,6 +145,9 @@ void main(void)
     	    }
 
 	    if (loopCounter > MAX_LOOPS){
+		timerA2InterruptDisable(); // stop the timer interrupts so the next note doesnt play
+    	    	BuzzerOff(); // stop the current tone
+    		
 		congratulatePlayer();	
 	    	
     	    	missedNotes = 0; // reset the missed notes for the next game
@@ -127,24 +155,7 @@ void main(void)
     	    	loopCounter = 0;
 		break; // break out and return to the menu
 	    }
-	    // set the leds to a led corrisponding to a range of notes
-    	    if (song[currentNoteIndex].frequency > C5_){
-    	    	setLeds(0x08);
-    	    	currentLEDs = 0x08;
-    	    }
-    	    else if (song[currentNoteIndex].frequency > E4_){
-    	    	setLeds(0x04);
-    	    	currentLEDs = 0x04;
-    	    }
-    	    else if (song[currentNoteIndex].frequency > G3_){
-    	    	setLeds(0x02);
-    	    	currentLEDs = 0x02;
-    	    }
-    	    else {
-    	    	setLeds(0x01);
-    	    	currentLEDs = 0x01; // hang on to the led state for later...
-    	    }
-    	}  // end while (1)
+   	}  // end while (1)
     }
 }
 
@@ -284,9 +295,8 @@ void humiliatePlayer(){
         Graphics_drawStringCentered(&g_sContext, "Press *", AUTO_STRING_LENGTH, 48, 45,OPAQUE_TEXT);
         Graphics_drawStringCentered(&g_sContext, "To Reset", AUTO_STRING_LENGTH, 48, 55,OPAQUE_TEXT);
         Graphics_flushBuffer(&g_sContext);
-	//TODO Play some sad music
         playTone(B3_,4);
-	playTone(RST,4);
+	playTone(01,4);
 	playTone(B3_,4);
 	playTone(B4_,4);
 	while (getKey() != '*');

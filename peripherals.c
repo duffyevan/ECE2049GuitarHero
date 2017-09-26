@@ -32,7 +32,7 @@ tContext g_sContext;	// user defined type used by graphics library
 tContext g_sContext;    // user defined type used by graphics library
 
 char getButtons(){
-	return ~((P7IN&1)<<3 | ((P3IN&0x40)>>4) | (P2IN&0x04)>>1 | ((P7IN&0x10)>>4));
+	return ~((P7IN&1)<<3 | ((P3IN&0x40)>>4) | (P2IN&0x04)>>1 | ((P7IN&0x10)>>4))&0x0F;
 	//      P7.0 In     P3.6 in as bit 1
 	//      			    P2.2 in as bit 2
 	//      			    		    P7.4 in as bit 3
