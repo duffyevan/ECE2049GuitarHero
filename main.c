@@ -25,7 +25,7 @@
 #define G5_ 784
 
 #define MAX_MISSED_NOTES 5
-
+#define MAX_LOOPS 2
 
 #include <msp430.h>
 
@@ -51,6 +51,7 @@ char currKey = 0; // keeps track of the current keypad key
 char currentNoteIndex = 0; // keeps track of the current location in the song array
 unsigned char missedNotes = 0; // keeps track of the number of notes the player has missed, end the game when theyve missed too many
 unsigned char currentLEDs = 0; // keeps track of the current state of the LEDs
+unsigned char loopCounter = 0;
 
 Tone song[] = {{D4_,4},{D3_,4},{D4_,8},{A4_,16},{D4_,16},{D5_,16},{A4_,16},{C5_,4},
 {C5_,8},{C5_,4},{B4_,16},{C5_,16},{B4_,16},{A4_,16},{B4_,16},{F4_,8},{D4_,8},{A4_,4},
@@ -65,6 +66,7 @@ __interrupt void Timer_A2_ISR(void){
     currentNoteIndex++; // step to the next tone
     if (currentNoteIndex == 35){ // if we reach the end, loop to the beginning (after the intro)
         currentNoteIndex = 3; // loop the song
+	loopCounter++;
     }
     playHWTone(song[currentNoteIndex].frequency, song[currentNoteIndex].duration); // kickstart the next tone of the song
 }
@@ -108,18 +110,23 @@ void main(void)
     	    if (missedNotes >= MAX_MISSED_NOTES){ // if the player misses too many notes
     	    	timerA2InterruptDisable(); // stop the timer interrupts so the next note doesnt play
     	    	BuzzerOff(); // stop the current tone
-    			
-    	    	Graphics_clearDisplay(&g_sContext); // Clear the display
-    	    	Graphics_drawStringCentered(&g_sContext, "Game Over", AUTO_STRING_LENGTH, 48, 15, OPAQUE_TEXT);
-    			Graphics_drawStringCentered(&g_sContext, "Press '*' to", AUTO_STRING_LENGTH, 48, 25, OPAQUE_TEXT);
-    			Graphics_drawStringCentered(&g_sContext, "Reset", AUTO_STRING_LENGTH, 48, 35, OPAQUE_TEXT);
-    			Graphics_flushBuffer(&g_sContext);
-    			
-    	    	while (getKey() != '*'); // wait for the '*' key
+    		
+		humiliatePlayer();
+
     	    	missedNotes = 0; // reset the missed notes for the next game
     	    	currentNoteIndex = 0; // put the index of the song at the beginnig
-    	    	break; // break out and return to the menu
+    	    	loopCounter = 0;
+		break; // break out and return to the menu
     	    }
+
+	    if (loopCounter > MAX_LOOPS){
+		congratulatePlayer();	
+	    	
+    	    	missedNotes = 0; // reset the missed notes for the next game
+    	    	currentNoteIndex = 0; // put the index of the song at the beginnig
+    	    	loopCounter = 0;
+		break; // break out and return to the menu
+	    }
 	    // set the leds to a led corrisponding to a range of notes
     	    if (song[currentNoteIndex].frequency > C5_){
     	    	setLeds(0x08);
