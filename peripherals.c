@@ -106,10 +106,10 @@ void setLeds(unsigned char state)
 }
 
 /**
- * Set timer parameters. Use the 32kHz clock in up mode and divide the clock by 4 to play the song slower
+ * Set timer parameters. Use the 32kHz clock in up mode and divide the clock by 2 to play the song slower
 **/
 void setupTimerA2(){
-    TA2CTL = TASSEL_1 | MC_1 | ID_2; // ACLK, UP MODE, INPUT DIVIDE BY 2^2
+    TA2CTL = TASSEL_1 | MC_1 | ID_1; // ACLK, UP MODE, INPUT DIVIDE BY 2^1
 }
 
 void timerA2InterruptEnable(){

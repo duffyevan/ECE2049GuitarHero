@@ -24,7 +24,7 @@
 #define F5_ 698
 #define G5_ 784
 
-
+#define MAX_MISSED_NOTES 5
 
 
 #include <msp430.h>
@@ -66,7 +66,7 @@ __interrupt void Timer_A2_ISR(void){
         currentNoteIndex = 3; // loop the song
     }
     playHWTone(song[currentNoteIndex].frequency, song[currentNoteIndex].duration);
-    BuzzerOff(); // TODO remove this
+//    BuzzerOff(); // TODO remove this
 }
 
 
@@ -104,6 +104,29 @@ void main(void)
 
     while (1)    // Forever loop
     {
+	
+	if (missedNotes >= MAX_MISSED_NOTES){
+		timerA2InterruptDisable();
+		BuzzerOff();
+    		
+		Graphics_clearDisplay(&g_sContext); // Clear the display
+		Graphics_drawStringCentered(&g_sContext, "Game Over", AUTO_STRING_LENGTH, 48, 15, TRANSPARENT_TEXT);
+    		Graphics_drawStringCentered(&g_sContext, "Press '*' to", AUTO_STRING_LENGTH, 48, 25, TRANSPARENT_TEXT);
+    		Graphics_drawStringCentered(&g_sContext, "Reset", AUTO_STRING_LENGTH, 48, 35, TRANSPARENT_TEXT);
+    		Graphics_flushBuffer(&g_sContext);
+    		
+		while (getKey() != '*');
+		missedNotes = 0;
+		currentNoteIndex = 0;
+	}
+	if (song[currentNoteIndex].frequency > C5_)
+		setLeds(0x08);
+	else if (song[currentNoteIndex].frequency > E4_)
+		setLeds(0x04);
+	else if (song[currentNoteIndex].frequency > G3_)
+		setLeds(0x02);
+	else 
+		setLeds(0x01);
     }  // end while (1)
 }
 
