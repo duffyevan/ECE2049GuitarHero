@@ -296,9 +296,9 @@ void humiliatePlayer(){
         Graphics_drawStringCentered(&g_sContext, "To Reset", AUTO_STRING_LENGTH, 48, 55,OPAQUE_TEXT);
         Graphics_flushBuffer(&g_sContext);
         playTone(B3_,4);
-	playTone(01,4);
-	playTone(B3_,4);
-	playTone(B4_,4);
+        playTone(RST,4);
+        playTone(B3_,4);
+        playTone(B4_,4);
 	while (getKey() != '*');
 }
 
@@ -310,6 +310,9 @@ void congratulatePlayer(){
         Graphics_drawStringCentered(&g_sContext, "To Reset", AUTO_STRING_LENGTH, 48, 45,OPAQUE_TEXT);
         Graphics_flushBuffer(&g_sContext);
         //TODO play some fanfare
+        playTone(D4_,4);
+        playTone(D3_,4);
+        playTone(D4_,8);
 	while (getKey() != '*');
 	
 }
