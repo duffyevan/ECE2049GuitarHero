@@ -69,6 +69,11 @@ void DACInit(void);
 void DACSetValue(unsigned int dac_code);
 void setupSPI_DAC(void);
 
+void setLeds(unsigned char state);
+
+
+char getButtons();
+void configureButtons();
 void configDisplay(void);
 void setupTimerA2();
 void kickstartSong(int noteIndex);

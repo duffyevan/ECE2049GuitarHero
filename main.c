@@ -49,6 +49,7 @@ typedef struct tone {
 // Declare globals here
 char currKey = 0;
 char currentNoteIndex = 0;
+unsigned char missedNotes = 0;
 
 Tone song[] = {{D4_,4},{D3_,4},{D4_,8},{A4_,16},{D4_,16},{D5_,16},{A4_,16},{C5_,4},
 {C5_,8},{C5_,4},{B4_,16},{C5_,16},{B4_,16},{A4_,16},{B4_,16},{F4_,8},{D4_,8},{A4_,4},
@@ -65,6 +66,7 @@ __interrupt void Timer_A2_ISR(void){
         currentNoteIndex = 3; // loop the song
     }
     playHWTone(song[currentNoteIndex].frequency, song[currentNoteIndex].duration);
+    BuzzerOff(); // TODO remove this
 }
 
 
@@ -97,21 +99,11 @@ void main(void)
     setupTimerA2(); // setup timer control register
     kickstartSong(0);
 
+    initLeds();
+    configureButtons();
+
     while (1)    // Forever loop
     {
-        // Check if any keys have been pressed on the 3x4 keypad
-        currKey = getKey();
-        if (currKey == '#'){
-            timerA2InterruptDisable(); // stop the interrupts
-            BuzzerOff(); // stop tone
-            while (getKey());
-        }
-        else if (currKey == '*'){
-            kickstartSong(0);
-            while (getKey());
-        }
-
-
     }  // end while (1)
 }
 
@@ -134,24 +126,25 @@ void main(void)
  * port pins. You will have to check each individually.
  */
 
-unsigned char getBoardButtons() {
-    unsigned char buttons = 0b00000000; //standardized in C++14, may not work
-    //    if (getS1) {
-    //        buttons |= 0b00000001;
-    //    }
-    //    if (getS2){
-    //        buttons |= 0b00000010;
-    //    }
-    //    if (getS3){
-    //        buttons |= 0b00000100;
-    //    }
-    //    if (getS4){
-    //        buttons |= 0b00001000;
-    //    }
-    return buttons;
-
-
-}
+// unsigned char getBoardButtons() {
+//     unsigned char buttons = 0b00000000; //standardized in C++14, may not work
+//     
+//     if (getS1) {
+//         buttons |= 0b00000001;
+//     }
+//     if (getS2){
+//         buttons |= 0b00000010;
+//     }
+//     if (getS3){
+//         buttons |= 0b00000100;
+//     }
+//     if (getS4){
+//         buttons |= 0b00001000;
+//     }
+//     return buttons;
+// 
+// 
+// }
 
 /**
  * Write a complete C function to configure and light the 2 user LEDs on the MSP430F5529 Launchpad board
@@ -162,8 +155,8 @@ unsigned char getBoardButtons() {
  *
  */
 
-void setLEDs(unsigned char ledconfig) {
-
+//void setLEDs(unsigned char ledconfig) {
+//
     //    if (ledconfig & 0b00000001) {
     //        setLED1on();
     //    }
@@ -178,7 +171,7 @@ void setLEDs(unsigned char ledconfig) {
     //    }
 
 
-}
+//}
 
 /**
  * In order to play a song, you will need to find a way to give each note of your song both pitch and
