@@ -88,9 +88,9 @@ __interrupt void Timer_A2_ISR(void){
     }
     
     unsigned int cntr = 0;
-    while (++cntr && getButtons() != currentLEDs);
+    while (++cntr < 0xA0FF && getButtons() != currentLEDs);
 
-    if (cntr == 0){
+    if (cntr == 0xA0FF){
 	missedNotes++;
     }
     playHWTone(song[currentNoteIndex].frequency, song[currentNoteIndex].duration); // kickstart the next tone of the song
