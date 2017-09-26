@@ -47,10 +47,10 @@ typedef struct tone {
 } Tone;
 
 // Declare globals here
-char currKey = 0;
-char currentNoteIndex = 0;
-unsigned char missedNotes = 0;
-unsigned char currentLEDs = 0;
+char currKey = 0; // keeps track of the current keypad key
+char currentNoteIndex = 0; // keeps track of the current location in the song array
+unsigned char missedNotes = 0; // keeps track of the number of notes the player has missed, end the game when theyve missed too many
+unsigned char currentLEDs = 0; // keeps track of the current state of the LEDs
 
 Tone song[] = {{D4_,4},{D3_,4},{D4_,8},{A4_,16},{D4_,16},{D5_,16},{A4_,16},{C5_,4},
 {C5_,8},{C5_,4},{B4_,16},{C5_,16},{B4_,16},{A4_,16},{B4_,16},{F4_,8},{D4_,8},{A4_,4},
@@ -61,13 +61,12 @@ Tone song[] = {{D4_,4},{D3_,4},{D4_,8},{A4_,16},{D4_,16},{D5_,16},{A4_,16},{C5_,
 //ISRs
 #pragma vector=TIMER2_A0_VECTOR
 __interrupt void Timer_A2_ISR(void){
-    BuzzerOff();
-    currentNoteIndex++;
-    if (currentNoteIndex == 35){
+    BuzzerOff(); // stop the previous tone
+    currentNoteIndex++; // step to the next tone
+    if (currentNoteIndex == 35){ // if we reach the end, loop to the beginning (after the intro)
         currentNoteIndex = 3; // loop the song
     }
-//    playHWTone(song[currentNoteIndex].frequency, song[currentNoteIndex].duration);
-//    BuzzerOff(); // TODO remove this
+    playHWTone(song[currentNoteIndex].frequency, song[currentNoteIndex].duration); // kickstart the next tone of the song
 }
 
 
@@ -79,64 +78,67 @@ void main(void)
 
 
     // Useful code starts here
-    initLeds();
+    initLeds(); // init the ports for the LEDs
+    configureButtons(); // init the ports for the push buttons
 
-    configDisplay();
-    configKeypad();
+    configDisplay(); // init the graphics lib
+    configKeypad(); // init the ports for the keypad
 
-    // *** Intro Screen ***
-    Graphics_clearDisplay(&g_sContext); // Clear the display
+    while (1){
+    	// *** Intro Screen ***
+    	Graphics_clearDisplay(&g_sContext); // Clear the display
 
-    // Write some text to the display
-    Graphics_drawStringCentered(&g_sContext, "MSP430 Hero", AUTO_STRING_LENGTH, 48, 15, TRANSPARENT_TEXT);
-    Graphics_drawStringCentered(&g_sContext, "Press '*' to begin", AUTO_STRING_LENGTH, 48, 25, TRANSPARENT_TEXT);
-    Graphics_flushBuffer(&g_sContext);
-    while (getKey() != '*');
-    countDown();
-    Graphics_clearDisplay(&g_sContext); // Clear the display
-    Graphics_drawStringCentered(&g_sContext, "Auckland", AUTO_STRING_LENGTH, 48, 15, TRANSPARENT_TEXT);
-    Graphics_flushBuffer(&g_sContext);
+    	// Write some text to the display
+    	Graphics_drawStringCentered(&g_sContext, "MSP430 Hero", AUTO_STRING_LENGTH, 48, 15, OPAQUE_TEXT);
+    	Graphics_drawStringCentered(&g_sContext, "Press '*' to begin", AUTO_STRING_LENGTH, 48, 25, OPAQUE_TEXT);
+    	Graphics_flushBuffer(&g_sContext);
+    	while (getKey() != '*');
+    	countDown(); // play the 3,2,1 animation
+    	Graphics_clearDisplay(&g_sContext); // Clear the display
+    	Graphics_drawStringCentered(&g_sContext, "Auckland", AUTO_STRING_LENGTH, 48, 15, OPAQUE_TEXT); // print the name of the song while the song is playing
+    	Graphics_flushBuffer(&g_sContext);
 
-    setupTimerA2(); // setup timer control register
-    kickstartSong(0);
+    	setupTimerA2(); // setup timer control register
+    	kickstartSong(0); // start the song from the beginning
 
-    initLeds();
-    configureButtons();
 
-    while (1)    // Forever loop
-    {
-	
-	if (missedNotes >= MAX_MISSED_NOTES){
-		timerA2InterruptDisable();
-		BuzzerOff();
-    		
-		Graphics_clearDisplay(&g_sContext); // Clear the display
-		Graphics_drawStringCentered(&g_sContext, "Game Over", AUTO_STRING_LENGTH, 48, 15, TRANSPARENT_TEXT);
-    		Graphics_drawStringCentered(&g_sContext, "Press '*' to", AUTO_STRING_LENGTH, 48, 25, TRANSPARENT_TEXT);
-    		Graphics_drawStringCentered(&g_sContext, "Reset", AUTO_STRING_LENGTH, 48, 35, TRANSPARENT_TEXT);
-    		Graphics_flushBuffer(&g_sContext);
-    		
-		while (getKey() != '*');
-		missedNotes = 0;
-		currentNoteIndex = 0;
-	}
-	if (song[currentNoteIndex].frequency > C5_){
-		setLeds(0x08);
-		currentLEDs = 0x08;
-	}
-	else if (song[currentNoteIndex].frequency > E4_){
-		setLeds(0x04);
-		currentLEDs = 0x04;
-	}
-	else if (song[currentNoteIndex].frequency > G3_){
-		setLeds(0x02);
-		currentLEDs = 0x02;
-	}
-	else {
-		setLeds(0x01);
-		currentLEDs = 0x01; // hang on to the led state for later...
-	}
-    }  // end while (1)
+    	while (1)    // Forever loop
+    	{
+    	    
+    	    if (missedNotes >= MAX_MISSED_NOTES){ // if the player misses too many notes
+    	    	timerA2InterruptDisable(); // stop the timer interrupts so the next note doesnt play
+    	    	BuzzerOff(); // stop the current tone
+    			
+    	    	Graphics_clearDisplay(&g_sContext); // Clear the display
+    	    	Graphics_drawStringCentered(&g_sContext, "Game Over", AUTO_STRING_LENGTH, 48, 15, OPAQUE_TEXT);
+    			Graphics_drawStringCentered(&g_sContext, "Press '*' to", AUTO_STRING_LENGTH, 48, 25, OPAQUE_TEXT);
+    			Graphics_drawStringCentered(&g_sContext, "Reset", AUTO_STRING_LENGTH, 48, 35, OPAQUE_TEXT);
+    			Graphics_flushBuffer(&g_sContext);
+    			
+    	    	while (getKey() != '*'); // wait for the '*' key
+    	    	missedNotes = 0; // reset the missed notes for the next game
+    	    	currentNoteIndex = 0; // put the index of the song at the beginnig
+    	    	break; // break out and return to the menu
+    	    }
+	    // set the leds to a led corrisponding to a range of notes
+    	    if (song[currentNoteIndex].frequency > C5_){
+    	    	setLeds(0x08);
+    	    	currentLEDs = 0x08;
+    	    }
+    	    else if (song[currentNoteIndex].frequency > E4_){
+    	    	setLeds(0x04);
+    	    	currentLEDs = 0x04;
+    	    }
+    	    else if (song[currentNoteIndex].frequency > G3_){
+    	    	setLeds(0x02);
+    	    	currentLEDs = 0x02;
+    	    }
+    	    else {
+    	    	setLeds(0x01);
+    	    	currentLEDs = 0x01; // hang on to the led state for later...
+    	    }
+    	}  // end while (1)
+    }
 }
 
 
@@ -276,10 +278,10 @@ void humiliatePlayer(){
         Graphics_drawStringCentered(&g_sContext, "To Reset", AUTO_STRING_LENGTH, 48, 55,OPAQUE_TEXT);
         Graphics_flushBuffer(&g_sContext);
 	//TODO Play some sad music
-        playTone(B3,4);
+        playTone(B3_,4);
 	playTone(01,4);
-	playTone(B3,4);
-	playTone(B4,4);
+	playTone(B3_,4);
+	playTone(B4_,4);
 	while (getKey() != '*');
 }
 
